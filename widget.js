@@ -62,7 +62,7 @@ widget = (function(){
                         url: '/get_oauth_github_data',
                         data: { 
                                 github_url: data_url
-                        }
+                        },
                         cache: false
                     }).done(function(github_data_json) {
                         if(github_data_json === ""){
