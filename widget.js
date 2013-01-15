@@ -89,7 +89,7 @@ widget = (function(){
                                 innerhtml = innerhtml + "<br/><span style='margin:10px;font-size:8pt;'>project: " + data_url_split[5] + "</span>";
                                 console.log("no access token found! provide authorization link");
                                 innerhtml = innerhtml + "<br/><a style='margin:10px;' href='/view/authorise_with_github'>authorize</a>"
-                            }
+                            });
                         }
 
                         widget.innerHTML = innerhtml;
