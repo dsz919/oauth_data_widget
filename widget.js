@@ -59,24 +59,39 @@ widget = (function(){
                     console.log("got this: " + config_object + " url: " + config_object.github_data_url);
                     var data_url = config_object.github_data_url
                     $.ajax({
-                        url: '/get_oauth_github_data',
+                        url: '/view/get_oauth_github_data',
                         data: { 
                                 github_url: data_url
                         },
                         cache: false
                     }).done(function(github_data_json) {
-                        if(github_data_json === ""){
-                            console.log("no github data found!");
+
+                        var access_code = $.cookie("access_code");
+                        console.log("cookie : " + access_code);
+
+                        var innerhtml = "";
+                        if(access_code == null){
+
+                            $.ajax({
+                                url: 'https://api.github.com/user?access_token=' + access_code,
+                                cache: false
+                            }).done(function(github_data_json){
+
+                                if(github_data_json === ""){
+                                    console.log("no github data found!");
+                                }
+                                github_data_object = jQuery.parseJSON(github_data_json);
+                                console.log("result: " + github_data_json);
+                                var number_of_commits = github_data_json.length;
+                                console.log("num commits: " + github_data_json.length);
+                                innerhtml = "<h1 style='margin:10px;color:red;'>Commits: " + number_of_commits + "</h1>"
+                                var data_url_split = data_url.split('/');
+                                innerhtml = innerhtml + "<br/><span style='margin:10px;font-size:8pt;'>project: " + data_url_split[5] + "</span>";
+                                console.log("no access token found! provide authorization link");
+                                innerhtml = innerhtml + "<br/><a style='margin:10px;' href='/view/authorise_with_github'>authorize</a>"
+                            }
                         }
-                        github_data_object = jQuery.parseJSON(github_data_json);
-                        console.log("result: " + github_data_json);
-                        var number_of_commits = github_data_json.length;
-                        console.log("num commits: " + github_data_json.length);
-                        var innerhtml = "<h1 style='margin:10px;color:red;'>Commits: " + number_of_commits + "</h1>"
-                        var data_url_split = data_url.split('/');
-                        innerhtml = innerhtml + "<br/><span style='margin:10px;font-size:8pt;'>project: " + data_url_split[5] + "</span>";
-                        //innerhtml = innerhtml + '<br><a href="https://github.com/login/oauth/authorize?client_id=0fe25fd8f1a07dec0d1c">authorize</a>'
-                        //innerhtml = innerhtml + '<br><a href="https://github.com/login/oauth/access_token?client_id=0fe25fd8f1a07dec0d1c">access_token</a>'
+
                         widget.innerHTML = innerhtml;
                     });
 
