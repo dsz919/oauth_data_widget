@@ -72,8 +72,8 @@ widget = (function(){
                         var innerhtml = "";
                         if(access_code != null){
 
-                            var private_githut_api_url = data_url + '?access_token=' + access_code;
-                            console.log("this was the url: " + private_github_api_url;
+                            var private_github_api_url = data_url + '?access_token=' + access_code;
+                            console.log("this was the url: " + private_github_api_url);
                             $.ajax({
                                 url: private_github_api_url,
                                 cache: false
