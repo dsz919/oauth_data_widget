@@ -70,10 +70,12 @@ widget = (function(){
                         console.log("cookie : " + access_code);
 
                         var innerhtml = "";
-                        if(access_code == null){
+                        if(access_code != null){
 
+                            var private_githut_api_url = data_url + '?access_token=' + access_code;
+                            console.log("this was the url: " + private_github_api_url;
                             $.ajax({
-                                url: 'https://api.github.com/user?access_token=' + access_code,
+                                url: private_github_api_url,
                                 cache: false
                             }).done(function(github_data_json){
 
@@ -87,11 +89,12 @@ widget = (function(){
                                 innerhtml = "<h1 style='margin:10px;color:red;'>Commits: " + number_of_commits + "</h1>"
                                 var data_url_split = data_url.split('/');
                                 innerhtml = innerhtml + "<br/><span style='margin:10px;font-size:8pt;'>project: " + data_url_split[5] + "</span>";
-                                console.log("no access token found! provide authorization link");
-                                innerhtml = innerhtml + "<br/><a style='margin:10px;' href='/view/authorise_with_github'>authorize</a>"
                             });
+                        }else{
+                            console.log("no access token found! provide authorization link");
+                            innerhtml = innerhtml + "<br/><a style='margin:10px;' href='/view/authorise_with_github'>authorize</a>"
                         }
-
+                        
                         widget.innerHTML = innerhtml;
                     });
 
