@@ -66,13 +66,13 @@ widget = (function(){
                         cache: false
                     }).done(function(github_data_json) {
 
-                        var access_code = $.cookie("access_code");
-                        console.log("cookie : " + access_code);
+                        var access_token = $.cookie("access_token"); // this needs to be per-widget so there are no conflicts
+                        console.log("cookie : " + access_token);
 
                         var innerhtml = "";
-                        if(access_code != null){
+                        if(access_token != null){
 
-                            var private_github_api_url = data_url + '?access_token=' + access_code;
+                            var private_github_api_url = data_url + '?access_token=' + access_token;
                             console.log("this was the url: " + private_github_api_url);
                             $.ajax({
                                 url: private_github_api_url,
@@ -89,6 +89,7 @@ widget = (function(){
                                 innerhtml = "<h1 style='margin:10px;color:red;'>Commits: " + number_of_commits + "</h1>"
                                 var data_url_split = data_url.split('/');
                                 innerhtml = innerhtml + "<br/><span style='margin:10px;font-size:8pt;'>project: " + data_url_split[5] + "</span>";
+                                widget.innerHTML = innerhtml;
                             });
                         }else{
                             console.log("no access token found! provide authorization link");
